@@ -1,1 +1,26 @@
+{
+  "tenants": {
+    "iraq": {
+      "tenant_name": "iraq",
+      "title_suffix": "IRAQ Dashboard",
+      "datasource": "iraq_datasource",
+      "tags": ["iraq", "ord", "tenant"],
+      "time_range": "last_24h"
+    },
+    "algeria": {
+      "tenant_name": "algeria",
+      "title_suffix": "Algeria Dashboard",
+      "datasource": "algeria_datasource",
+      "tags": ["algeria", "ord", "tenant"],
+      "time_range": "last_7d"
+    },
+    "another_tenant": {
+      "tenant_name": "another_tenant",
+      "title_suffix": "Another Tenant Dashboard",
+      "datasource": "another_tenant_datasource",
+      "tags": ["another_tenant", "ord", "tenant"],
+      "time_range": "last_30d"
+    }
+  }
+}
 
