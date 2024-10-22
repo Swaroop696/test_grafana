@@ -23,7 +23,7 @@
           },
           "targets": [
             {
-              "body": "select date, count(*) as unique_users from maa \r\nwhere date>=\'${__from:date:YYYYMM}\' AND date<=\'${__to:date:YYYYMM}\' and maa.\"tenantId\"=\'ordirq\' AND maa.\"AccountId\" ~ \'^\\d+$\'  -- Ensures AccountId is numeric\r\ngroup by date order by date",
+              "body": "select date, count(*) as unique_users from maa \r\nwhere date>=\'${__from:date:YYYYMM}\' AND date<=\'${__to:date:YYYYMM}\' and maa.\"tenantId\"=\'ordirq\' AND maa.\"AccountId\" ~ \'^\\\\d+$\' group by date order by date",
               "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
@@ -40,49 +40,6 @@
                   "jsonPath": "$.unique_users",
                   "language": "jsonata",
                   "name": "Unique MAU"
-                }
-              ],
-              "method": "POST",
-              "queryParams": "",
-              "refId": "A",
-              "urlPath": "/ord/proda/a/api/sql"
-            }
-          ]
-        },
-        {
-          "title": "Daily Active Users (DAU)",
-          "type": "timeseries",
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
-          },
-          "id": 1,
-          "grid_position": {
-            "h": 7,
-            "w": 12,
-            "x": 0,
-            "y": 8
-          },
-          "targets": [
-            {
-              "body": "select date, count(distinct asl.\"AccountId\") as unique_users from asl \r\nwhere date>=\'${__from:date:YYYYMMDD}\' AND date<=\'${__to:date:YYYYMMDD}\'\r\nand asl.\"TenantId\" = \'ordirq\' AND asl.\"AccountId\" ~ \'^\\d+$\'  -- Ensures AccountId is numeric \r\ngroup by date order by date",
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.date",
-                  "language": "jsonata",
-                  "name": "Date",
-                  "type": "time"
-                },
-                {
-                  "jsonPath": "$.unique_users",
-                  "language": "jsonata",
-                  "name": "Unique DAU",
-                  "type": "number"
                 }
               ],
               "method": "POST",
@@ -102,48 +59,6 @@
       "time_range": "last_7d",
       "panels": [
         {
-          "title": "Monthly Active Users (MAU)",
-          "type": "barchart",
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
-          },
-          "id": 2,
-          "grid_position": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 0
-          },
-          "targets": [
-            {
-              "body": "select date, count(*) as unique_users from maa \r\nwhere date>=\'${__from:date:YYYYMM}\' AND date<=\'${__to:date:YYYYMM}\' and maa.\"tenantId\"=\'ordalgeria\' AND maa.\"AccountId\" ~ \'^\\d+$\'  -- Ensures AccountId is numeric\r\ngroup by date order by date",
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.date",
-                  "language": "jsonata",
-                  "name": "Month",
-                  "type": "time"
-                },
-                {
-                  "jsonPath": "$.unique_users",
-                  "language": "jsonata",
-                  "name": "Unique MAU"
-                }
-              ],
-              "method": "POST",
-              "queryParams": "",
-              "refId": "A",
-              "urlPath": "/ord/proda/a/api/sql"
-            }
-          ]
-        },
-        {
           "title": "Daily Active Users (DAU)",
           "type": "timeseries",
           "datasource": {
@@ -159,7 +74,7 @@
           },
           "targets": [
             {
-              "body": "select date, count(distinct asl.\"AccountId\") as unique_users from asl \r\nwhere date>=\'${__from:date:YYYYMMDD}\' AND date<=\'${__to:date:YYYYMMDD}\'\r\nand asl.\"TenantId\" = \'ordalgeria\' AND asl.\"AccountId\" ~ \'^\\d+$\'  -- Ensures AccountId is numeric \r\ngroup by date order by date",
+              "body": "select date, count(distinct asl.\"AccountId\") as unique_users from asl \r\nwhere date>=\'${__from:date:YYYYMMDD}\' AND date<=\'${__to:date:YYYYMMDD}\' and asl.\"TenantId\" = \'ordirq\' AND asl.\"AccountId\" ~ \'^\\\\d+$\' group by date order by date",
               "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
