@@ -1,0 +1,131 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 820,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "calcsMutation": "standard",
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap');\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: 'Poppins', sans-serif;\n  background-color: #0d0d0d;\n}\n\n.container {\n  max-width: 450px;\n  margin: 0 auto;\n  padding: 0;\n  color: #ffffff;\n}\n\n.main-metrics {\n  list-style-type: none;\n  padding: 0;\n}\n\n.main-metrics li {\n  padding: 10px;\n  margin-bottom: 8px;\n  background-color: #2b2b2b;\n  color: #ffffff;\n  cursor: pointer;\n  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;\n  font-family: 'Poppins', sans-serif;\n  font-weight: 600;\n  font-size: 16px;\n  border-radius: 5px;\n  position: relative;\n}\n\n.main-metrics li:hover {\n  background-color: #333;\n  color: #f5a623;\n  box-shadow: 0 0 6px rgba(245, 166, 35, 0.5);\n  transform: scale(1.02);\n}\n\n.main-metrics li.active {\n  background-color: #444;\n  color: #f5a623;\n  box-shadow: 0 0 8px rgba(245, 166, 35, 0.6);\n}\n\n.toggle-sign {\n  font-size: 20px;\n  margin-right: 10px;\n  color: #f5a623;\n  position: absolute;\n  right: 50px;\n}\n\n.submetrics {\n  list-style-type: none;\n  padding-left: 5px;\n  margin-top: 8px;\n  overflow: hidden;\n  max-height: 0;\n  opacity: 0;\n  transition: max-height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease;\n}\n\n.submetrics.show {\n  max-height: 1000px; /* Adjust as necessary */\n  opacity: 1;\n}\n\n.submetrics li {\n  padding: 8px;\n  background-color: #1e1e1e;\n  color: #bbbbbb;\n  cursor: pointer;\n  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;\n  font-family: 'Roboto', sans-serif;\n  font-weight: 400;\n  font-size: 15px;\n  border-radius: 5px;\n  margin-bottom: 5px;\n}\n\n.submetrics li:hover {\n  background-color: #333;\n  color: #f5a623;\n  box-shadow: 0 0 6px rgba(245, 166, 35, 0.4);\n  transform: scale(1.02);\n}\n\n.submetrics li.clickable-metric:hover {\n  color: #1da1f2;\n  text-shadow: 0 0 8px #1da1f2;\n}\n",
+        "dynamicData": false,
+        "dynamicFieldDisplayValues": false,
+        "dynamicHtmlGraphics": false,
+        "dynamicProps": false,
+        "html": "<div class=\"container\">\n    <ul class=\"main-metrics\">\n      <li data-submetrics=\"user-engagement\" class=\"main-metric\">\n        User Engagement Metrics <span class=\"toggle-sign\">+</span>\n        <ul class=\"submetrics hidden\"></ul>\n      </li>\n      <li data-submetrics=\"content-performance\" class=\"main-metric\">\n        Content Performance <span class=\"toggle-sign\">+</span>\n        <ul class=\"submetrics hidden\"></ul>\n      </li>\n      <li data-submetrics=\"user-acquisition\" class=\"main-metric\">\n        User Acquisition and Retention <span class=\"toggle-sign\">+</span>\n        <ul class=\"submetrics hidden\"></ul>\n      </li>\n      <li data-submetrics=\"technical-performance\" class=\"main-metric\">\n        Technical Performance <span class=\"toggle-sign\">+</span>\n        <ul class=\"submetrics hidden\"></ul>\n      </li>\n      <li data-submetrics=\"demographics\" class=\"main-metric\">\n        Demographic Insights <span class=\"toggle-sign\">+</span>\n        <ul class=\"submetrics hidden\"></ul>\n      </li>\n    </ul>\n</div>",
+        "onInit": "",
+        "onInitOnResize": false,
+        "onRender": "const mainMetrics = htmlNode.querySelectorAll('.main-metrics li');\r\n\r\n// Function to extract all query parameters from the current URL\r\nconst getAllParamsFromUrl = () => {\r\n  const params = new URLSearchParams(window.location.search);\r\n  const paramsObject = {};\r\n\r\n  // Only include parameters that start with 'var-'\r\n  params.forEach((value, key) => {\r\n    if (key.startsWith('var-')) {\r\n      if (paramsObject[key]) {\r\n        if (!Array.isArray(paramsObject[key])) {\r\n          paramsObject[key] = [paramsObject[key]]; // Convert existing value to an array\r\n        }\r\n        paramsObject[key].push(value); // Add new value to the array\r\n      } else {\r\n        paramsObject[key] = value; // Store the parameter value\r\n      }\r\n    }\r\n  });\r\n  \r\n  return paramsObject;\r\n};\r\n\r\nasync function fetchMetricsData() {\r\n  try {\r\n    const response = await fetch('https://raw.githubusercontent.com/Swaroop696/Metric/refs/heads/main/metrics.json');\r\n    if (!response.ok) {\r\n      throw new Error(`Failed to fetch data: ${response.status}`);\r\n    }\r\n    \r\n    const data = await response.json();\r\n    return data;\r\n  } catch (error) {\r\n    console.error('Error fetching data:', error);\r\n    return null; // Handle error by returning null\r\n  }\r\n}\r\n\r\nconst updateSubmetrics = (key, parentElement, metricsData) => {\r\n  const submetrics = metricsData[key];\r\n  const submetricsList = parentElement.querySelector('.submetrics');\r\n  const allParams = getAllParamsFromUrl(); // Get relevant parameters from the URL\r\n\r\n  if (submetricsList && submetrics) {\r\n    submetricsList.innerHTML = ''; // Clear existing submetrics\r\n\r\n    submetrics.forEach(submetric => {\r\n      const listItem = document.createElement('li');\r\n      listItem.textContent = submetric.name;\r\n\r\n      // Add URL redirection if URL exists\r\n      if (submetric.url) {\r\n        listItem.classList.add('clickable-metric');\r\n\r\n        // Create a new URL object to modify the existing URL\r\n        const url = new URL(submetric.url);\r\n        \r\n        // Append all relevant parameters to the new URL\r\n        Object.entries(allParams).forEach(([key, value]) => {\r\n          if (Array.isArray(value)) {\r\n            value.forEach(val => {\r\n              url.searchParams.append(key, val); // Append each value for the key\r\n            });\r\n          } else {\r\n            url.searchParams.set(key, value);\r\n          }\r\n        });\r\n\r\n        // Set the modified URL with parameters\r\n        listItem.setAttribute('data-url', url.toString());\r\n      }\r\n\r\n      submetricsList.appendChild(listItem);\r\n    });\r\n\r\n    // Handle redirection for clickable metrics\r\n    const clickableMetrics = submetricsList.querySelectorAll('.clickable-metric');\r\n    clickableMetrics.forEach(metric => {\r\n      metric.addEventListener('click', (e) => {\r\n        const url = e.target.getAttribute('data-url');\r\n        if (url) {\r\n          // Re-fetch parameters to ensure the latest values are used\r\n          const updatedParams = getAllParamsFromUrl();\r\n          const updatedUrl = new URL(url); // Create a new URL object\r\n\r\n          // Clear existing params and re-append updated ones\r\n          updatedUrl.searchParams.forEach((_, key) => updatedUrl.searchParams.delete(key));\r\n          Object.entries(updatedParams).forEach(([key, value]) => {\r\n            if (Array.isArray(value)) {\r\n              value.forEach(val => updatedUrl.searchParams.append(key, val));\r\n            } else {\r\n              updatedUrl.searchParams.set(key, value);\r\n            }\r\n          });\r\n\r\n          window.location.href = updatedUrl.toString(); // Redirect to the updated URL\r\n        }\r\n      });\r\n    });\r\n\r\n    // Show submetrics with animation\r\n    setTimeout(() => {\r\n      submetricsList.classList.add('show');\r\n    }, 100);\r\n  } else {\r\n    console.error(\"Submetrics element or data not found!\");\r\n  }\r\n};\r\n\r\n// Attach event listeners to each main metric\r\nmainMetrics.forEach(metric => {\r\n  metric.addEventListener('click', async () => {\r\n    const currentMetric = metric.dataset.submetrics;\r\n    const currentSubmetrics = metric.querySelector('.submetrics');\r\n\r\n    // Toggle the current submetrics\r\n    if (currentSubmetrics.classList.contains('show')) {\r\n      currentSubmetrics.classList.remove('show');\r\n      metric.querySelector('.toggle-sign').textContent = '+';\r\n    } else {\r\n      // Fetch metrics data\r\n      const metricsData = await fetchMetricsData();\r\n      if (metricsData) {\r\n        updateSubmetrics(currentMetric, metric, metricsData);\r\n        currentSubmetrics.classList.add('show');\r\n        metric.querySelector('.toggle-sign').textContent = '-';\r\n      }\r\n    }\r\n\r\n    // Close other submetrics\r\n    mainMetrics.forEach(otherMetric => {\r\n      if (otherMetric !== metric) {\r\n        otherMetric.querySelector('.submetrics').classList.remove('show');\r\n        otherMetric.querySelector('.toggle-sign').textContent = '+';\r\n      }\r\n    });\r\n  });\r\n});\r\n\r\n// Initialize with default metric\r\n(async () => {\r\n  const metricsData = await fetchMetricsData();\r\n  if (metricsData) {\r\n    const defaultMetric = htmlNode.querySelector('[data-submetrics=\"user-engagement\"]');\r\n    if (defaultMetric) {\r\n      updateSubmetrics('user-engagement', defaultMetric, metricsData);\r\n      defaultMetric.classList.add('active');\r\n      const toggleSign = defaultMetric.querySelector('.toggle-sign');\r\n      if (toggleSign) {\r\n        toggleSign.textContent = '-';\r\n      }\r\n    }\r\n  }\r\n})();\r\n",
+        "overflow": "visible",
+        "panelupdateOnMount": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull",
+            "last",
+            "firstNotNull",
+            "first",
+            "min",
+            "max",
+            "mean",
+            "sum",
+            "count",
+            "range",
+            "delta",
+            "step",
+            "diff",
+            "logmin",
+            "allIsZero",
+            "allIsNull",
+            "diffperc"
+          ]
+        },
+        "renderOnMount": true,
+        "rootCSS": "",
+        "useGrafanaScrollbar": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "transparent": true,
+      "type": "gapit-htmlgraphics-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Data Insights Hub",
+  "uid": "aa0a9d5b-94ef-4f88-a6a7-6427d9067928",
+  "version": 22,
+  "weekStart": ""
+}
