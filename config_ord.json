@@ -23,7 +23,7 @@
           },
           "targets": [
             {
-              "body": "select date, count(*) as unique_users from maa \r\nwhere date>=\'${__from:date:YYYYMM}\' AND date<=\'${__to:date:YYYYMM}\' and maa.\"tenantId\"=\'ordirq\' AND maa.\"AccountId\" ~ \'^\\\\d+$\' group by date order by date",
+              "body": "select date, count(*) as unique_users from maa WHERE date >= '${__from:date:YYYYMM}' AND date <= '${__to:date:YYYYMM}' AND maa.tenantId = 'ordirq' AND maa.AccountId ~ '^[\\d+$]' GROUP BY date ORDER BY date",
               "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
@@ -74,7 +74,7 @@
           },
           "targets": [
             {
-              "body": "select date, count(distinct asl.\"AccountId\") as unique_users from asl \r\nwhere date>=\'${__from:date:YYYYMMDD}\' AND date<=\'${__to:date:YYYYMMDD}\' and asl.\"TenantId\" = \'ordirq\' AND asl.\"AccountId\" ~ \'^\\\\d+$\' group by date order by date",
+              "body": "select date, count(distinct asl.AccountId) as unique_users from asl WHERE date >= '${__from:date:YYYYMMDD}' AND date <= '${__to:date:YYYYMMDD}' AND asl.TenantId = 'ordirq' AND asl.AccountId ~ '^[\\d+$]' GROUP BY date ORDER BY date",
               "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
