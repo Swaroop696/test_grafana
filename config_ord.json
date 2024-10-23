@@ -12,7 +12,7 @@
           "type": "barchart",
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+            "uid": ""
           },
           "id": 2,
           "grid_position": {
@@ -27,7 +27,7 @@
               "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
-                "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+                "uid": ""
               },
               "fields": [
                 {
