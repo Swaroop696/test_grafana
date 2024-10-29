@@ -1,0 +1,64 @@
+{
+  "user-engagement": [
+    {
+      "name": "Users",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/a47ad859-fb69-4517-87ae-45ec38ee062f/daily-weekly-active-users-dau-wau?orgId=3"
+    },
+    {
+      "name": "Usage",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/f1ad1b3e-a8ab-4eb8-b929-1da9a34fe9aa/content-completion-rate?orgId=3"
+    },
+    {
+      "name": "Watch Behaviour",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ac04e756-23a7-44b3-941c-b9589c64291b/time-of-day-usage?orgId=3"
+    }
+  ],
+  "content-performance": [
+    {
+      "name": "Watch Insights",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/da6734dc-b3b5-4300-baee-f231305b3617/watch-insights"
+    }
+  ],
+  "user-acquisition": [
+    {
+      "name": "Unique Users",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/cf448d63-f9b2-44ad-b7bb-9030af895d05/unique-users?orgId=3"
+    }
+  ],
+  "technical-performance": [
+    {
+      "name": "Rebuffer Percentage",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/e09d4794-5bbf-4bb5-8e17-e5cda709a850/rebuffer-percentage"
+    },
+    {
+      "name": "Errors",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/b380ca89-a9dc-4b9e-aa11-329790553af7/errors"
+    }
+  ],
+  "demographics": [
+    {
+      "name": "Device Usage",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/bb9e945c-e111-4b03-887c-ce3ea7487ee8/device-usage?orgId=3"
+    }
+  ],
+  "recommendation-effectiveness": [
+    {
+      "name": "Recommendation Click-Through Rate",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/e7872649-a8d6-47da-8917-3b6eefd9bfbb/recommendation-click-through-rate?orgId=3"
+    },
+    {
+      "name": "Personalization Score",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/a79e9243-534b-46ba-aacd-76a9e2b76202/personalization-score?orgId=3"
+    }
+  ],
+  "custom-insights": [
+    {
+      "name": "Content Heatmaps",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/dc38b03f-6753-4e70-9713-3471dd456dca/content-heatmaps?orgId=3"
+    },
+    {
+      "name": "Subscription Predictive Modeling",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/b4a0a294-4f3a-4625-bdff-2d75349f7084/subscription-predictive-modeling?orgId=3"
+    }
+  ]
+}
