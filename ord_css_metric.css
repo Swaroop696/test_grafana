@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d0d0d;
+}
+
+.container {
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 0;
+  color: #ffffff;
+}
+
+.main-metrics {
+  list-style-type: none;
+  padding: 0;
+}
+
+.main-metrics li {
+  padding: 10px;
+  margin-bottom: 8px;
+  background-color: #2b2b2b;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.main-metrics li:hover {
+  background-color: #333;
+  color: #f5a623;
+  box-shadow: 0 0 6px rgba(245, 166, 35, 0.5);
+  transform: scale(1.02);
+}
+
+.main-metrics li.active {
+  background-color: #444;
+  color: #f5a623;
+  box-shadow: 0 0 8px rgba(245, 166, 35, 0.6);
+}
+
+.toggle-sign {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #f5a623;
+  position: absolute;
+  right: 50px;
+}
+
+.submetrics {
+  list-style-type: none;
+  padding-left: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease;
+}
+
+.submetrics.show {
+  max-height: 1000px; /* Adjust as necessary */
+  opacity: 1;
+}
+
+.submetrics li {
+  padding: 8px;
+  background-color: #1e1e1e;
+  color: #bbbbbb;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.submetrics li:hover {
+  background-color: #333;
+  color: #f5a623;
+  box-shadow: 0 0 6px rgba(245, 166, 35, 0.4);
+  transform: scale(1.02);
+}
+
+.submetrics li.clickable-metric:hover {
+  color: #1da1f2;
+  text-shadow: 0 0 8px #1da1f2;
+}
