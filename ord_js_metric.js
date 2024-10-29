@@ -24,7 +24,7 @@ const getAllParamsFromUrl = () => {
 
 async function fetchMetricsData() {
   try {
-    const response = await fetch('https://raw.githubusercontent.com/Swaroop696/Metric/refs/heads/main/metrics.json');
+    const response = await fetch('https://raw.githubusercontent.com/Swaroop696/test_grafana/refs/heads/main/ord_submetrics.json');
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.status}`);
     }
