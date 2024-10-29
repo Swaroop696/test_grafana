@@ -1,0 +1,4626 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 872,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Unique Count of users that are active (logged in at least once) aggregated per day.\n\nData Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "body": "select date, \r\ncount(distinct asl.\"AccountId\") as unique_users from asl\r\nwhere date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n    AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') and asl.\"TenantId\" IN (${Tenant:csv:quote}) \r\nAND asl.\"AccountId\" ~ '^\\d+$'  -- Ensures AccountId is numeric\r\ngroup by date order by date",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.unique_users",
+              "language": "jsonata",
+              "name": "Unique DAU",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Daily Active Users (DAU)",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD-YYYY",
+            "timeField": "Date",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Unique Count of users that are active (logged in at least once) during that month.\n\nData Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "body": "SELECT date, count(*) AS unique_users FROM maa\r\nWHERE date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,8),'-','') > $cap_date_monthly THEN REPLACE(SUBSTR('${__from:date}',1,8),'-','') ELSE $cap_date_monthly::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,8),'-','')\r\nAND maa.\"tenantId\" IN (${Tenant:csv:quote}) AND maa.\"AccountId\" ~ '^\\d+$'  -- Ensures AccountId is numeric\r\nGROUP BY date\r\nORDER BY date",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Month",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.unique_users",
+              "language": "jsonata",
+              "name": "Unique MAU"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Monthly Active Users (MAU)",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM",
+            "timeField": "Month",
+            "useTimezone": false
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Impression ids (Number of Plays) for all users watching Live and VOD.\n\nPlays are not unique users. If a user watches multiple videos they will be counted as multiple plays.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date,\r\n       COUNT(distinct impression_id) AS impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0 and date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') \r\nAND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nAND video_id IS NOT NULL AND video_title IS NOT NULL and video_id in (${Channel:csv:multi}) and is_live =True\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        {
+          "body": "SELECT date,\r\n       COUNT(distinct impression_id) AS impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0 and date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') \r\nAND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nAND video_id IS NOT NULL AND video_title IS NOT NULL and video_id NOT in (${Channel:csv:multi}) and is_live =false\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total Plays",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Count",
+            "binary": {
+              "left": "Count A",
+              "operator": "+",
+              "right": "Count B"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration by all users.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 4,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and is_live = True\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote}) \r\n         and video_id in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Live",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and is_live = false\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote}) \r\n         and video_id not in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "VOD",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total Duration Watched",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Duration watched",
+            "binary": {
+              "left": "Live A",
+              "operator": "+",
+              "right": "VOD B"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Unique Count of users that are active (logged in at least once) during the selected time range.\n\nData Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 10,
+        "y": 8
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT\r\n    COUNT(DISTINCT asl.\"AccountId\") AS unique_users\r\nFROM \r\n    asl\r\nWHERE \r\n    date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n    AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') and asl.\"TenantId\" IN (${Tenant:csv:quote}) \r\n    AND asl.\"AccountId\" ~ '^\\d+$';\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.unique_users",
+              "language": "jsonata",
+              "name": "Active users",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Active Users",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Data Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 14,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT \r\n    COUNT(DISTINCT a.\"AccountId\") AS new_users\r\nFROM \r\n    asl AS a\r\nLEFT JOIN \r\n    ssl AS s \r\n    ON a.\"AccountId\" = s.\"AccountId\" \r\n    AND s.date = (CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date \r\n                       THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') \r\n                       ELSE $cap_date::text END)\r\n    AND s.\"Disabled\" = 'false' \r\nWHERE \r\n    a.date >= (CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date \r\n                     THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') \r\n                     ELSE $cap_date::text END) \r\n    AND a.date <= REPLACE(SUBSTR('${__to:date}',1,10),'-','') \r\n    AND a.\"TenantId\" IN (${Tenant:csv:quote}) \r\n    AND s.\"AccountId\" IS NULL;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.new_users",
+              "language": "jsonata",
+              "name": "New users",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "New Users",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD-YYYY",
+            "timeField": "Date",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Data Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT \r\n    COUNT(DISTINCT asl.\"AccountId\") AS returning_users\r\nFROM \r\n    asl\r\nWHERE \r\n    date >= (CASE \r\n                  WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n                  THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n                  ELSE $cap_date::text \r\n              END) \r\n    AND date <= REPLACE(SUBSTR('${__to:date}', 1, 10), '-', '') \r\n    AND asl.\"TenantId\" IN (${Tenant:csv:quote}) \r\n    AND asl.\"AccountId\" ~ '^\\d+$'\r\n    AND asl.\"AccountId\" NOT IN (\r\n        SELECT \r\n            DISTINCT a.\"AccountId\"\r\n        FROM \r\n            asl AS a \r\n        LEFT JOIN \r\n            ssl AS s ON a.\"AccountId\" = s.\"AccountId\" \r\n            AND s.date = (CASE \r\n                              WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n                              THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n                              ELSE $cap_date::text \r\n                          END) \r\n            AND s.\"Disabled\" = 'false'\r\n        WHERE \r\n            a.date >= (CASE \r\n                           WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n                           THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n                           ELSE $cap_date::text \r\n                       END) \r\n            AND a.date <= REPLACE(SUBSTR('${__to:date}', 1, 10), '-', '') \r\n            AND a.\"TenantId\" IN (${Tenant:csv:quote})\r\n            AND s.\"AccountId\" IS NULL\r\n    );",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.returning_users",
+              "language": "jsonata",
+              "name": "returning_users",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Returning Users",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD-YYYY",
+            "timeField": "Date",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Impression ids (Number of Plays) for all users watching Live and VOD.\n\nPlays are not unique users. If a user watches multiple videos they will be counted as multiple plays.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 0,
+        "y": 13
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.9",
+      "targets": [
+        {
+          "body": "SELECT date,\r\n       COUNT(DISTINCT CASE WHEN is_live = true THEN impression_id END) AS live_impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n         AND time>='${__from}' AND time<='${__to}' \r\n         AND Tenant IN (${Tenant:csv:quote}) and video_id is not null and video_title is not null and video_id in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.live_impression_count",
+              "language": "jsonata",
+              "name": "LIVE",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        {
+          "body": "SELECT date,\r\n      COUNT(DISTINCT CASE WHEN is_live = false THEN impression_id END) AS impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' \r\n         AND Tenant IN (${Tenant:csv:quote}) and video_id is not null and video_title is not null and video_id not in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "VOD",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total Plays - Live and VOD",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration for all Live and VOD users.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 4,
+        "y": 13
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and is_live = True\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote}) \r\n         and video_id in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "LIVE",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and is_live = false\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote}) \r\n         and video_id not in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "VOD",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total Duration Watched",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {}
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Count of Unique channels watched by Live users.\n\nData Source: Bitmovin (Delta lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 12,
+        "y": 13
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^CH Name$/",
+          "limit": 500,
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "azBlobName": "ORD_Call_Letter.csv",
+          "azContainerName": "datastore-clientlogs",
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdz5q7udhc000d"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "simple",
+          "refId": "A",
+          "root_selector": "",
+          "source": "azure-blob",
+          "type": "csv",
+          "uql": "parse-csv",
+          "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "body": "SELECT distinct (video_id), COUNT(impression_id) as impression_count\r\nFROM bml\r\nWHERE is_live = TRUE\r\n    AND video_startuptime > 0\r\n    AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n         AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY video_id;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.video_id",
+              "language": "jsonata",
+              "name": "video_id",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "impression_count",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "No. of Live Channels Watched",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "impression_count"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "CH Name"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "CH Name"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Unique Count of users that are active (logged in at least once) aggregated per day.\n\nData Source: Subscriber logs (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 17,
+        "y": 13
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "Select count(distinct(e.\"AccountId\")) as deleted_users from ssl \r\nas e LEFT JOIN ssl as s ON e.\"AccountId\" = s.\"AccountId\" AND s.date = '${__from:date:YYYYMMDD}'\r\nWHERE e.date>='${__from:date:YYYYMMDD}' AND e.date<='${__to:date:YYYYMMDD}' \r\nAND e.\"Disabled\" = 'true' AND (s.\"Disabled\" = 'false' OR s.\"Disabled\" IS NULL)",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.deleted_users",
+              "language": "jsonata",
+              "name": "Deleted Users",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Deleted Users",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD-YYYY",
+            "timeField": "Date",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration for all  Android users.\n\nData Source: Bitmovin (Delta Lake",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 19
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and operatingsystem = 'Android'\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Duration_Watched",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total  Duration Watched - Android",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration for all  iOS users.\n\nData Source: Bitmovin (Delta Lake",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 19
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and platform = 'iOS'\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Duration_Watched",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total  Duration Watched - iOS",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration for all Fire TV users.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 12,
+        "y": 19
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and operatingsystem ='Fire OS'\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Duration_Watched",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total  Duration Watched - Fire TV",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Total Watched Duration for all Web TV users.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 17,
+        "y": 19
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT date, \r\n       SUM(played) AS total_hours_watched\r\nFROM bml\r\nWHERE played > 0 and platform = 'web'\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "Date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Duration_Watched",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total  Duration Watched - Web TV",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Impression ids (Number of Plays) for all users for Live and VOD , aggregated per day.\n\nPlays are not unique users. If a user watches multiple videos they will be counted as multiple plays.\n\nData Source: Bitmovin (Delta lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VOD"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.9",
+      "targets": [
+        {
+          "body": "SELECT date,\r\n       COUNT(DISTINCT CASE WHEN is_live = true THEN impression_id END) AS impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n         AND time>='${__from}' AND time<='${__to}' \r\n         AND Tenant IN (${Tenant:csv:quote}) and video_id is not null and video_title is not null and video_id in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;\r\n\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "LIVE",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        {
+          "body": "SELECT date,\r\n       COUNT(DISTINCT CASE WHEN is_live = false THEN impression_id END) AS impression_count\r\nFROM bml\r\nWHERE video_startuptime > 0\r\n  AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n         AND time>='${__from}' AND time<='${__to}' \r\n         AND Tenant IN (${Tenant:csv:quote}) and video_id is not null and video_title is not null and video_id not in (${Channel:csv:multi})\r\nGROUP BY date\r\nORDER BY date;\r\n\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "VOD",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Total Plays - Live and VOD",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Unique Viewers, grouped by Platform aggregated per day.\n\nUnique Viewers represent a user that started a video playback session at least once. It doesn't matter how often a user plays a video - it is only counted once.\n\nData source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.9",
+      "targets": [
+        {
+          "body": "SELECT date, platform,\r\n       COUNT(DISTINCT user_id) AS user_count\r\nFROM bml\r\nWHERE video_startuptime > 0 AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date, platform\r\nORDER BY date;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.user_count",
+              "language": "jsonata",
+              "name": "count",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.platform",
+              "language": "jsonata",
+              "name": "platform"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Unique Viewers by Platform ",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "platform",
+            "rowField": "date",
+            "valueField": "count"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "date\\platform"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "A list of all channels, aggregated by impression IDs (number of plays) and grouped by video id for the given time range.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 13,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "limit": 500,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "azBlobName": "ORD_Call_Letter.csv",
+          "azContainerName": "datastore-clientlogs",
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdz5q7udhc000d"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "simple",
+          "refId": "A",
+          "root_selector": "",
+          "source": "azure-blob",
+          "type": "csv",
+          "uql": "parse-csv",
+          "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "body": "SELECT video_id, COUNT(distinct impression_id) AS impression_count\r\nFROM bml\r\nWHERE is_live = TRUE\r\n    AND video_startuptime > 0 AND video_id IS NOT NULL and video_title is not null\r\n    AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n         AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n         AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY video_id\r\nORDER BY impression_count DESC;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.video_id",
+              "language": "jsonata",
+              "name": "video_id",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "All Channels - Total Plays",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Count"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Impression count",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "CH Name",
+                "Impression count"
+              ]
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "CH Name"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Impression count"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "All VOD assets aggregated by impression id's (number of plays) and grouped by video title for the given time range. \n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "${__field.displaylabel}",
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 15,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "limit": 1000,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT\r\n    TRIM(video_title) AS video_title_trimmed,\r\n    COUNT(distinct impression_id) AS impression_count\r\nFROM\r\n    bml\r\nWHERE\r\n    is_live = false AND video_startuptime > 0 AND video_title IS NOT NULL and video_id is NOT NULL\r\n    AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n    AND Tenant IN (${Tenant:csv:quote})\r\n    AND time>='${__from}' AND time<='${__to}' and video_id not in (${Channel:csv:multi})\r\nGROUP BY\r\n    TRIM(video_title)\r\nORDER BY\r\n    impression_count DESC;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.impression_count",
+              "language": "jsonata",
+              "name": "Count"
+            },
+            {
+              "jsonPath": "$.video_title_trimmed",
+              "language": "jsonata",
+              "name": "Video_title",
+              "type": "string"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "All VOD Assets - Total Plays",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "A list of all channels aggregated by impression id's (number of plays) and grouped by video id for the given time range. \n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 16,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 500,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "azBlobName": "ORD_Call_Letter.csv",
+          "azContainerName": "datastore-clientlogs",
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdz5q7udhc000d"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "refId": "A",
+          "root_selector": "",
+          "source": "azure-blob",
+          "type": "csv",
+          "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "body": "SELECT video_id, SUM(played) AS duration_watched\r\nFROM bml\r\nWHERE is_live = true\r\n    AND played > 0\r\n    AND video_id IS NOT NULL\r\n    AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n    AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','')\r\n    AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY video_id\r\nORDER BY duration_watched DESC;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.video_id",
+              "language": "jsonata",
+              "name": "video_id",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.duration_watched",
+              "language": "jsonata",
+              "name": "Duration",
+              "type": "number"
+            }
+          ],
+          "hide": false,
+          "method": "POST",
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "All Channels - Duration Watched",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Duration"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Duration",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "CH Name",
+                "Total Duration"
+              ]
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "CH Name"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Total Duration"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "All VOD assets aggregated by Duration watched and  grouped by video title for the given time range. \n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "${__field.displaylabel}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 17,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "limit": 500,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT\r\n    TRIM(video_title) AS video_title_trimmed,\r\n    SUM(played) AS duration_watched\r\nFROM\r\n    bml\r\nWHERE\r\n    is_live = false\r\n    AND played > 0 AND video_title IS NOT NULL \r\n    AND date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\n    AND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND Tenant IN (${Tenant:csv:quote}) AND time>='${__from}' AND time<='${__to}' and video_id not in (${Channel:csv:multi})\r\nGROUP BY\r\n    TRIM(video_title)\r\nORDER BY\r\n    duration_watched DESC;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.duration_watched",
+              "language": "jsonata",
+              "name": "Duration",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.video_title_trimmed",
+              "language": "jsonata",
+              "name": "video_title",
+              "type": "string"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "All VOD Assets - Duration Watched",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Indicates the various app versions utilized on the platform, along with the unique number of users for each version within the given time range.\n\nData Source: Bitmovin (Delta Lake)\n\n",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "${__field.displaylabel}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "id": 18,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "limit": 500,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT ecl.\"clientBuildVersion\",\r\n       COUNT(DISTINCT ecl.\"accountId\") AS unique_users\r\nFROM ecl\r\nWHERE date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND ecl.\"country\" <> 'India'\r\nAND ecl.\"startTimeMillis\">='${__from}' AND ecl.\"startTimeMillis\"<='${__to}' AND ecl.\"tenantId\" IN (${Tenant:csv:quote})\r\nAND ecl.\"accountId\" ~ '^\\d+$'  -- Ensures AccountId is numeric\r\nGROUP BY ecl.\"clientBuildVersion\"\r\nORDER BY unique_users DESC;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.clientBuildVersion",
+              "language": "jsonata",
+              "name": "Appversion"
+            },
+            {
+              "jsonPath": "$.unique_users",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "App Version",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "^\\d([\\d.]+?\\d)?$"
+                  }
+                },
+                "fieldName": "Appversion"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Rebuffering percentage is the average time a user had to wait for video segment downloads in relation to the total time a user spent watching a video.\n\nIf a user watches a video with a length of 9 seconds and has to wait 1 second for video segment downloads, it would take him 10 seconds in total to watch the video, so you'd get a 10% rebuffering percentage.\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VOD"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LIVE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date\\is_live"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.0",
+      "targets": [
+        {
+          "body": "SELECT date,\r\n    is_live,\r\n    (SUM(buffered)::float / (SUM(buffered) + SUM(played)) * 100) AS rebuffer_percentage\r\nFROM \r\n    bml\r\nWHERE  date>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') \r\nAND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY date, is_live\r\norder by date, is_live;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.is_live",
+              "language": "jsonata",
+              "name": "is_live",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.rebuffer_percentage",
+              "language": "jsonata",
+              "name": "rebuffer percentage",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Rebuffer Percentage - Live and VOD",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "is_live",
+            "rowField": "date",
+            "valueField": "rebuffer percentage"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "date\\is_live"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "true",
+            "renamePattern": "LIVE"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "false",
+            "renamePattern": "VOD"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Error percentage shows the number of errors in relation to the number of play attempts on a video platform.\n\nThe error percentage includes errors that disrupted a user's playback as well as errors from which the player was able to recover. It does not include error code 10000 (QUALITY_CHANGE_THRESHOLD_EXCEEDED).\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VOD"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LIVE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date\\is_live"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.0",
+      "targets": [
+        {
+          "body": "SELECT \r\n    date,\r\n    is_live,\r\n    (COUNT(error_code) * 100.0 / COUNT(distinct impression_id)) AS error_percentage\r\nFROM \r\n    bml\r\nWHERE  \r\n    date >= (\r\n        CASE \r\n            WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n            THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n            ELSE $cap_date::text \r\n        END\r\n    ) \r\n    AND date <= REPLACE(SUBSTR('${__to:date}', 1, 10), '-', '') \r\n    AND time >= '${__from}' AND time <= '${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY \r\n    date, is_live\r\nORDER BY \r\n    date, is_live;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.is_live",
+              "language": "jsonata",
+              "name": "is_live",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.error_percentage",
+              "language": "jsonata",
+              "name": "error_percentage",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Error Percentage - Live and VOD",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "is_live",
+            "rowField": "date",
+            "valueField": "error_percentage"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "date\\is_live"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "true",
+            "renamePattern": "LIVE"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "false",
+            "renamePattern": "VOD"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Error percentage shows the number of errors in relation to the number of play attempts on a video platform.\n\nThe error percentage includes errors that disrupted a user's playback as well as errors from which the player was able to recover. It does not include error code 10000 (QUALITY_CHANGE_THRESHOLD_EXCEEDED).\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LIVE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VOD"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "id": 37,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.0",
+      "targets": [
+        {
+          "body": "SELECT \r\n    date,\r\n    is_live,\r\n    MAX(concurrent_viewers) AS total_concurrent_viewers\r\nFROM (\r\n    SELECT \r\n        date, \r\n        minute,\r\n        is_live,\r\n        COUNT(DISTINCT impression_id) AS concurrent_viewers\r\n    FROM \r\n        bml\r\n    WHERE \r\n        date >= (CASE WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n                          THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n                          ELSE $cap_date::text \r\n                     END)\r\n        AND date <= REPLACE(SUBSTR('${__to:date}', 1, 10), '-', '')\r\n        AND Tenant IN (${Tenant:csv:quote}) \r\n        AND time >= '${__from}' \r\n        AND time <= '${__to}'\r\n    GROUP BY \r\n        date, \r\n        minute,\r\n        is_live\r\n) AS subquery\r\nGROUP BY \r\n    date, \r\n    is_live\r\nORDER BY \r\n    total_concurrent_viewers DESC;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.date",
+              "language": "jsonata",
+              "name": "date",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.total_concurrent_viewers",
+              "language": "jsonata",
+              "name": "concurrent_viewers",
+              "type": "number"
+            },
+            {
+              "jsonPath": "$.is_live",
+              "language": "jsonata",
+              "name": "is_live"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Max Concurrent Viewers - Live and VOD",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "is_live",
+            "rowField": "date",
+            "valueField": "concurrent_viewers"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "date\\is_live"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "true",
+            "renamePattern": "LIVE"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "false",
+            "renamePattern": "VOD"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Unique Viewers by Device type - Android.\n\nData Source: Bitmovin (Delta lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 88,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "Phone": {
+                  "color": "green",
+                  "index": 0
+                },
+                "TV": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "Tablet": {
+                  "color": "orange",
+                  "index": 2
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "month"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/YYYY"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TV"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 64
+      },
+      "id": 19,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.96,
+        "colorByField": "Type",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        },
+        "xField": "month",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT month, \r\n       device_class,\r\n       COUNT(DISTINCT user_id) AS user_count\r\nFROM bml\r\nWHERE operatingsystem = 'Android' AND video_startuptime > 0 AND \r\ndate>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY month, device_class\r\nORDER BY month, device_class;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.month",
+              "language": "jsonata",
+              "name": "month",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.device_class",
+              "language": "jsonata",
+              "name": "Type"
+            },
+            {
+              "jsonPath": "$.user_count",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Device Types - Android",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Unique Viewers by Device type - iOS.\n\nData Source: Bitmovin",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "Phone": {
+                  "color": "green",
+                  "index": 0
+                },
+                "Tablet": {
+                  "color": "orange",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "month"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/YYYY"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tablet"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 64
+      },
+      "id": 24,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.92,
+        "colorByField": "Type",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "month",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT month,\r\n       device_class,\r\n       COUNT(DISTINCT user_id) AS user_count\r\nFROM bml\r\nWHERE platform = 'iOS' AND video_startuptime > 0 AND \r\ndate>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY month, device_class\r\nORDER BY device_class;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.device_class",
+              "language": "jsonata",
+              "name": "Type",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.user_count",
+              "language": "jsonata",
+              "name": "count"
+            },
+            {
+              "jsonPath": "$.month",
+              "language": "jsonata",
+              "name": "month",
+              "type": "time"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Device Types - iOS",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Unique Viewers by Device type - Fire TV.\n\nData Source: Bitmovin",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 88,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "Chrome": {
+                  "color": "green",
+                  "index": 0
+                },
+                "Chrome Mobile": {
+                  "color": "orange",
+                  "index": 1
+                },
+                "Chrome Mobile iOS": {
+                  "color": "red",
+                  "index": 2
+                },
+                "Edge": {
+                  "color": "yellow",
+                  "index": 3
+                },
+                "Edge Mobile": {
+                  "color": "#c1aa14",
+                  "index": 4
+                },
+                "Firefox": {
+                  "color": "#fb5b44",
+                  "index": 8
+                },
+                "Instagram": {
+                  "color": "#342939",
+                  "index": 7
+                },
+                "Mobile Safari": {
+                  "color": "purple",
+                  "index": 6
+                },
+                "Safari": {
+                  "color": "blue",
+                  "index": 5
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Chrome Mobile"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Chrome Mobile iOS"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "month"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/YYYY"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 73
+      },
+      "id": 20,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.96,
+        "colorByField": "Type",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        },
+        "xField": "month",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT month, \r\n       browser,\r\n       COUNT(DISTINCT user_id) AS user_count\r\nFROM bml\r\nWHERE platform = 'web' AND video_startuptime > 0 AND \r\ndate>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY month, browser\r\nORDER BY browser;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.month",
+              "language": "jsonata",
+              "name": "month",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.browser",
+              "language": "jsonata",
+              "name": "Type"
+            },
+            {
+              "jsonPath": "$.user_count",
+              "language": "jsonata",
+              "name": "Count",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Device Types - Web TV",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Count of Unique Viewers by Device type - Fire TV.\n\nData Source: Bitmovin",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "TV": {
+                  "color": "green",
+                  "index": 0
+                },
+                "Tablet": {
+                  "color": "yellow",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "month"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/YYYY"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 73
+      },
+      "id": 21,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.92,
+        "colorByField": "Type",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "month",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT month,\r\n       device_class,\r\n       COUNT(DISTINCT user_id) AS user_count\r\nFROM bml\r\nWHERE operatingsystem = 'Fire OS' AND video_startuptime > 0 AND \r\ndate>=(CASE WHEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${__from:date}',1,10),'-','') ELSE $cap_date::text END) \r\nAND date<=REPLACE(SUBSTR('${__to:date}',1,10),'-','') AND time>='${__from}' AND time<='${__to}' AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY month, device_class\r\nORDER BY device_class;\r\n",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.device_class",
+              "language": "jsonata",
+              "name": "Type",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.user_count",
+              "language": "jsonata",
+              "name": "count"
+            },
+            {
+              "jsonPath": "$.month",
+              "language": "jsonata",
+              "name": "month",
+              "type": "time"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Device Types - FireTV",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "description": "Top users aggerated by Total Watched Duration\n\nData Source: Bitmovin (Delta Lake)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 82
+      },
+      "id": 22,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "limit": 2000,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 11
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.4.8",
+      "targets": [
+        {
+          "body": "SELECT month, \r\n       custom_user_id,\r\n       SUM(played) AS total_hours_watched  -- Convert milliseconds to hours\r\nFROM bml\r\nWHERE played > 0 \r\n  AND date >= (CASE \r\n                 WHEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') > $cap_date \r\n                 THEN REPLACE(SUBSTR('${__from:date}', 1, 10), '-', '') \r\n                 ELSE $cap_date::text \r\n               END) \r\n  AND date <= REPLACE(SUBSTR('${__to:date}', 1, 10), '-', '') \r\n  AND time >= '${__from}' \r\n  AND time <= '${__to}' \r\n  AND Tenant IN (${Tenant:csv:quote})\r\nGROUP BY month, custom_user_id\r\nORDER BY month;",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.custom_user_id",
+              "language": "jsonata",
+              "name": "User id"
+            },
+            {
+              "jsonPath": "$.total_hours_watched",
+              "language": "jsonata",
+              "name": "Duration"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "title": "Top Users Vs Watched Time",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Duration"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 12,
+        "y": 82
+      },
+      "id": 25,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "calcsMutation": "standard",
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "* {\n  font-family: Open Sans;\n}\n\n.box {\n  border: solid #555 2px;\n  border-radius: 10px;\n  padding: 10px 20px;\n}\n",
+        "dynamicData": false,
+        "dynamicFieldDisplayValues": false,
+        "dynamicHtmlGraphics": false,
+        "dynamicProps": false,
+        "html": "<link rel=\"stylesheet\" href=\"\r\nhttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n<button class=\"btn\" style=\"width:100%\"><i class=\"fa fa-download\"></i> Daily Active Users</button>",
+        "onInit": "const btn = htmlNode.querySelector('button');\n\nconst timeoutLength = 3000;\nconst defaultButtonText = 'Export to CSV';\n\n\nconst saveCsvFile = (csv, filename) => {\n  const elt = document.createElement('a');\n  elt.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));\n  elt.setAttribute('download', filename);\n\n  elt.style.display = 'none';\n  htmlNode.appendChild(elt);\n\n  elt.click();\n\n  htmlNode.removeChild(elt);\n};\n\nbtn.onclick = () => {\n  clearTimeout(btn.timeout);\n  btn.textContent = 'Exporting...';\n  const [{ datasource }] = data.request.targets;\n  const from = data.request.range.from\n  const to = data.request.range.to\n  const fromDate = from.format(\"YYYYMMDD\")\n  const toDate = to.format(\"YYYYMMDD\")\n//  const filename = [refId, from.toISOString(), to.toISOString()].join('-') + '.csv';\n\tconst filename = \"rawdata.csv\"\n\n  const queryString = \"select distinct asl.\\\"AccountId\\\", asl.\\\"TenantId\\\", date from asl where asl.\\\"TenantId\\\"<> 'default' and date >= '\" + fromDate + \"' AND date <= '\" + toDate + \"'\";\n\n  fetch(`api/datasources/proxy/uid/${datasource.uid}/ord/proda/a/api/sql`, {\n    headers: {\n      'cache-control': 'no-cache',\n      'ACCEPT': 'application/csv',\n    },\n    body: queryString,\n    method: 'POST',\n  })\n\t.then((res) => res.text()) \n    .then((csv) => {\n\t\t\tsaveCsvFile(csv, filename);\n\t\t\tbtn.textContent = 'Export finished';\n\t\t\tbtn.timeout = setTimeout(() => {\n\t\t\t\tbtn.textContent = defaultButtonText;\n\t\t\t\t}, timeoutLength);\n\t\t}\n      )\n    .catch((e) => {\n      btn.textContent = 'Export failed... (Failed retrieving data)';\n      console.warn(e);\n\n      btn.timeout = setTimeout(() => {\n        btn.textContent = defaultButtonText;\n      }, timeoutLength);\n    });\n};",
+        "onInitOnResize": false,
+        "onRender": "const btn = htmlNode.querySelector('button');\r\n \r\nconst timeoutLength = 3000;\r\nconst defaultButtonText = 'Daily Active Users';\r\n \r\nconst saveCsvFile = (csv, filename) => {\r\n    const elt = document.createElement('a');\r\n    elt.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));\r\n    elt.setAttribute('download', filename);\r\n \r\n    elt.style.display = 'none';\r\n    htmlNode.appendChild(elt);\r\n \r\n    elt.click();\r\n \r\n    htmlNode.removeChild(elt);\r\n};\r\n \r\nbtn.onclick = () => {\r\n    clearTimeout(btn.timeout);\r\n    btn.innerHTML = '<i class=\"fa fa-spinner fa-spin\"></i> Exporting...'; // Change to loading spinner\r\n    const [{ datasource }] = data.request.targets;\r\n    const from = data.request.range.from;\r\n    const to = data.request.range.to;\r\n    const fromDate = from.format(\"YYYYMMDD\");\r\n    const toDate = to.format(\"YYYYMMDD\");\r\n    const filename = \"rawdata.csv\";\r\n    const tenantName =getTemplateSrv().replace('$Tenant');\r\n    const tenantIdentifier = tenantName.split(',')[0].replace(/['\"]/g, '').trim();\r\n \r\n    const queryString = `select distinct daa.\"AccountId\", daa.\"tenantId\", date from daa where daa.\"tenantId\" = '${tenantIdentifier}' and date >= '${fromDate}' AND date <= '${toDate}'`;\r\n \r\n    fetch(`api/datasources/proxy/uid/${datasource.uid}/ord/proda/a/api/sql`, {\r\n        headers: {\r\n            'cache-control': 'no-cache',\r\n            'ACCEPT': 'application/csv',\r\n        },\r\n        body: queryString,\r\n        method: 'POST',\r\n    })\r\n    .then((res) => res.text()) \r\n    .then((csv) => {\r\n        saveCsvFile(csv, filename);\r\n        btn.innerHTML = '<i class=\"fa fa-check\"></i> Export finished'; // Change to success icon\r\n        btn.timeout = setTimeout(() => {\r\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Daily Active Users'; // Reset to original\r\n        }, timeoutLength);\r\n    })\r\n    .catch((e) => {\r\n        btn.innerHTML = '<i class=\"fa fa-exclamation-triangle\"></i> Export failed...'; // Change to error icon\r\n        console.warn(e);\r\n \r\n        btn.timeout = setTimeout(() => {\r\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Daily Active Users'; // Reset to original\r\n        }, timeoutLength);\r\n    });\r\n};",
+        "overflow": "visible",
+        "panelupdateOnMount": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull",
+            "last",
+            "firstNotNull",
+            "first",
+            "min",
+            "max",
+            "mean",
+            "sum",
+            "count",
+            "range",
+            "delta",
+            "step",
+            "diff",
+            "logmin",
+            "allIsZero",
+            "allIsNull",
+            "diffperc"
+          ]
+        },
+        "renderOnMount": true,
+        "rootCSS": "",
+        "useGrafanaScrollbar": true
+      },
+      "targets": [
+        {
+          "body": "  select date, count(distinct asl.\"AccountId\") as unique_users from asl where date>='${__from:date:YYYYMMDD}' AND date<='${__to:date:YYYYMMDD}' and asl.\"TenantId\"='orddza' group by date order by date",
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "type": "gapit-htmlgraphics-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 16,
+        "y": 82
+      },
+      "id": 26,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "calcsMutation": "standard",
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "* {\n  font-family: Open Sans;\n}\n\n.box {\n  border: solid #555 2px;\n  border-radius: 10px;\n  padding: 10px 20px;\n}\n",
+        "dynamicData": false,
+        "dynamicFieldDisplayValues": false,
+        "dynamicHtmlGraphics": false,
+        "dynamicProps": false,
+        "html": "<link rel=\"stylesheet\" href=\"\r\nhttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n<button class=\"btn\" style=\"width:100%\"><i class=\"fa fa-download\"></i> Monthly Active Users</button>",
+        "onInit": "const btn = htmlNode.querySelector('button');\n \nconst timeoutLength = 3000;\nconst defaultButtonText = 'Monthly Active Users';\n \nconst saveCsvFile = (csv, filename) => {\n    const elt = document.createElement('a');\n    elt.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));\n    elt.setAttribute('download', filename);\n \n    elt.style.display = 'none';\n    htmlNode.appendChild(elt);\n \n    elt.click();\n \n    htmlNode.removeChild(elt);\n};\n \nbtn.onclick = () => {\n    clearTimeout(btn.timeout);\n    btn.innerHTML = '<i class=\"fa fa-spinner fa-spin\"></i> Exporting...'; // Change to loading spinner\n    const [{ datasource }] = data.request.targets;\n    const from = data.request.range.from;\n    const to = data.request.range.to;\n    const fromDate = from.format(\"YYYYMM\");\n    const toDate = to.format(\"YYYYMM\");\n    const filename = \"rawdata.csv\";\n \n    const queryString = `select distinct maa.\"AccountId\", maa.\"tenantId\", date from maa where maa.\"tenantId\"<> 'default' and date >= '${fromDate}' AND date <= '${toDate}'`;\n \n    fetch(`api/datasources/proxy/uid/${datasource.uid}/ord/proda/a/api/sql`, {\n        headers: {\n            'cache-control': 'no-cache',\n            'ACCEPT': 'application/csv',\n        },\n        body: queryString,\n        method: 'POST',\n    })\n    .then((res) => res.text()) \n    .then((csv) => {\n        saveCsvFile(csv, filename);\n        btn.innerHTML = '<i class=\"fa fa-check\"></i> Export finished'; // Change to success icon\n        btn.timeout = setTimeout(() => {\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Monthly Active Users'; // Reset to original\n        }, timeoutLength);\n    })\n    .catch((e) => {\n        btn.innerHTML = '<i class=\"fa fa-exclamation-triangle\"></i> Export failed...'; // Change to error icon\n        console.warn(e);\n \n        btn.timeout = setTimeout(() => {\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Monthly Active Users'; // Reset to original\n        }, timeoutLength);\n    });\n};",
+        "onInitOnResize": false,
+        "onRender": "",
+        "overflow": "visible",
+        "panelupdateOnMount": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull",
+            "last",
+            "firstNotNull",
+            "first",
+            "min",
+            "max",
+            "mean",
+            "sum",
+            "count",
+            "range",
+            "delta",
+            "step",
+            "diff",
+            "logmin",
+            "allIsZero",
+            "allIsNull",
+            "diffperc"
+          ]
+        },
+        "renderOnMount": true,
+        "rootCSS": "",
+        "useGrafanaScrollbar": true
+      },
+      "targets": [
+        {
+          "body": "  select date, count(distinct asl.\"AccountId\") as unique_users from asl where date>='${__from:date:YYYYMMDD}' AND date<='${__to:date:YYYYMMDD}' and asl.\"TenantId\"='orddza' group by date order by date",
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "type": "gapit-htmlgraphics-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 20,
+        "y": 82
+      },
+      "id": 27,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "calcsMutation": "standard",
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "* {\n  font-family: Open Sans;\n}\n\n.box {\n  border: solid #555 2px;\n  border-radius: 10px;\n  padding: 10px 20px;\n}\n",
+        "dynamicData": false,
+        "dynamicFieldDisplayValues": false,
+        "dynamicHtmlGraphics": false,
+        "dynamicProps": false,
+        "html": "<link rel=\"stylesheet\" href=\"\r\nhttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\r\n<button class=\"btn\" style=\"width:100%\"><i class=\"fa fa-download\"></i> Device Models</button>",
+        "onInit": "const btn = htmlNode.querySelector('button');\n \nconst timeoutLength = 3000;\nconst defaultButtonText = 'Device Models';\n \nconst saveCsvFile = (csv, filename) => {\n    const elt = document.createElement('a');\n    elt.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));\n    elt.setAttribute('download', filename);\n \n    elt.style.display = 'none';\n    htmlNode.appendChild(elt);\n \n    elt.click();\n \n    htmlNode.removeChild(elt);\n};\n \nbtn.onclick = () => {\n    clearTimeout(btn.timeout);\n    btn.innerHTML = '<i class=\"fa fa-spinner fa-spin\"></i> Exporting...'; // Change to loading spinner\n    const [{ datasource }] = data.request.targets;\n    const from = data.request.range.from;\n    const to = data.request.range.to;\n    const fromDate = from.format(\"YYYYMMDD\");\n    const toDate = to.format(\"YYYYMMDD\");\n    const fromTime = from.valueOf();\n    const toTime = to.valueOf();\n    const filename = \"rawdata.csv\";\n \n    const queryString = `select device_class as Type, device_type as Model, tenant as tenant_name from bml where tenant <> 'default' and date>=(CASE WHEN REPLACE(SUBSTR('{from}',1,10),'-','') > $cap_date THEN REPLACE(SUBSTR('${from}',1,10),'-','') ELSE $cap_date::text END) AND date<=REPLACE(SUBSTR('${to}',1,10),'-','') and time>='${fromTime}' AND time<='${toTime}' group by device_class,device_type,tenant`;\n console.log(queryString)\n    fetch(`api/datasources/proxy/uid/${datasource.uid}/ord/proda/a/api/sql`, {\n        headers: {\n            'cache-control': 'no-cache',\n            'ACCEPT': 'application/csv',\n        },\n        body: queryString,\n        method: 'POST',\n    })\n    .then((res) => res.text())\n    .then((csv) => {\n        saveCsvFile(csv, filename);\n        btn.innerHTML = '<i class=\"fa fa-check\"></i> Export finished'; // Change to success icon\n        btn.timeout = setTimeout(() => {\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Device Models'; // Reset to original\n        }, timeoutLength);\n    })\n    .catch((e) => {\n        btn.innerHTML = '<i class=\"fa fa-exclamation-triangle\"></i> Export failed...'; // Change to error icon\n        console.warn(e);\n \n        btn.timeout = setTimeout(() => {\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Device Models'; // Reset to original\n        }, timeoutLength);\n    });\n};",
+        "onInitOnResize": false,
+        "onRender": "const btn = htmlNode.querySelector('button');\r\n \r\nconst timeoutLength = 3000;\r\nconst defaultButtonText = 'Device Models';\r\n \r\nconst saveCsvFile = (csv, filename) => {\r\n    const elt = document.createElement('a');\r\n    elt.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));\r\n    elt.setAttribute('download', filename);\r\n \r\n    elt.style.display = 'none';\r\n    htmlNode.appendChild(elt);\r\n \r\n    elt.click();\r\n \r\n    htmlNode.removeChild(elt);\r\n};\r\n \r\nbtn.onclick = () => {\r\n    clearTimeout(btn.timeout);\r\n    btn.innerHTML = '<i class=\"fa fa-spinner fa-spin\"></i> Exporting...'; // Change to loading spinner\r\n    const [{ datasource }] = data.request.targets;\r\n    const from = new Date(data.request.range.from).toISOString();\r\n    const to = new Date(data.request.range.to).toISOString();\r\n    const fromTime = data.request.range.from.valueOf();\r\n    const toTime = data.request.range.to.valueOf();\r\n    const filename = \"rawdata.csv\";\r\n \r\n    const queryString = `select device_class as Type, device_type as Model, tenant as tenant_name from bml where tenant <> 'default' and date>=(CASE WHEN REPLACE(SUBSTR('{from}',1,10),'-','') > $cap_date::text THEN REPLACE(SUBSTR('${from}',1,10),'-','') ELSE $cap_date::text END) AND date<=REPLACE(SUBSTR('${to}',1,10),'-','') and time>='${fromTime}' AND time<='${toTime}' group by device_class,device_type,tenant`;\r\n console.log(queryString)\r\n    fetch(`api/datasources/proxy/uid/${datasource.uid}/ord/proda/a/api/sql`, {\r\n        headers: {\r\n            'cache-control': 'no-cache',\r\n            'ACCEPT': 'application/csv',\r\n        },\r\n        body: queryString,\r\n        method: 'POST',\r\n    })\r\n    .then((res) => res.text())\r\n    .then((csv) => {\r\n        saveCsvFile(csv, filename);\r\n        btn.innerHTML = '<i class=\"fa fa-check\"></i> Export finished'; // Change to success icon\r\n        btn.timeout = setTimeout(() => {\r\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Device Models'; // Reset to original\r\n        }, timeoutLength);\r\n    })\r\n    .catch((e) => {\r\n        btn.innerHTML = '<i class=\"fa fa-exclamation-triangle\"></i> Export failed...'; // Change to error icon\r\n        console.warn(e);\r\n \r\n        btn.timeout = setTimeout(() => {\r\n            btn.innerHTML = '<i class=\"fa fa-download\"></i> Device Models'; // Reset to original\r\n        }, timeoutLength);\r\n    });\r\n};",
+        "overflow": "visible",
+        "panelupdateOnMount": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull",
+            "last",
+            "firstNotNull",
+            "first",
+            "min",
+            "max",
+            "mean",
+            "sum",
+            "count",
+            "range",
+            "delta",
+            "step",
+            "diff",
+            "logmin",
+            "allIsZero",
+            "allIsNull",
+            "diffperc"
+          ]
+        },
+        "renderOnMount": true,
+        "rootCSS": "",
+        "useGrafanaScrollbar": true
+      },
+      "targets": [
+        {
+          "body": "  select date, count(distinct asl.\"AccountId\") as unique_users from asl\r\n  where date>='${__from:date:YYYYMMDD}' AND date<='${__to:date:YYYYMMDD}' and asl.\"TenantId\"='orddza' group by date order by date",
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/ord/proda/a/api/sql"
+        }
+      ],
+      "type": "gapit-htmlgraphics-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "Iraq"
+          ],
+          "value": [
+            "'ordirq','Iraq'"
+          ]
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": true,
+        "name": "Tenant",
+        "options": [
+          {
+            "selected": true,
+            "text": "Iraq",
+            "value": "'ordirq','Iraq'"
+          },
+          {
+            "selected": false,
+            "text": "Oman",
+            "value": "'ordomn','Oman'"
+          },
+          {
+            "selected": false,
+            "text": "Maldives",
+            "value": "'ordmdv','Maldives'"
+          },
+          {
+            "selected": false,
+            "text": "Algeria",
+            "value": "'orddza','Algeria'"
+          },
+          {
+            "selected": false,
+            "text": "Tunisia",
+            "value": "'ordtun','Tunisia'"
+          },
+          {
+            "selected": false,
+            "text": "Kuwait",
+            "value": "'ordkwt','Kuwait'"
+          }
+        ],
+        "query": "Iraq :  'ordirq'\\,'Iraq', Oman : 'ordomn'\\,'Oman', Maldives : 'ordmdv'\\,'Maldives', Algeria : 'orddza'\\,'Algeria', Tunisia : 'ordtun'\\,'Tunisia', Kuwait : 'ordkwt'\\,'Kuwait'",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "20240731",
+          "value": "20240731"
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+        },
+        "definition": "$.capped_date",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "cap_date",
+        "options": [],
+        "query": {
+          "body": "SELECT regexp_replace(left(cast(from_unixtime(cast((date_part('epoch',current_date()) -90*24*60*60) as INT)) as string),10), '-', '', 'g') as capped_date",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.capped_date",
+              "language": "jsonata",
+              "name": "cap_date",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "202407",
+          "value": "202407"
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "ef74fa8a-b650-4eea-8f67-797564708f4b"
+        },
+        "definition": "$.capped_date",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "cap_date_monthly",
+        "options": [],
+        "query": {
+          "body": "SELECT regexp_replace(left(cast(from_unixtime(cast((date_part('epoch',current_date()) -90*24*60*60) as INT)) as string),8), '-', '', 'g') as capped_date",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.capped_date",
+              "language": "jsonata",
+              "name": "cap_date_monthly",
+              "type": "number"
+            }
+          ],
+          "method": "POST",
+          "queryParams": "",
+          "urlPath": "/ord/proda/a/api/sql"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "'AqCh_AlJazeeraEng'",
+            "'AqCh_RussiaToday'",
+            "'AqCh_AlJazeeraTV'",
+            "'AqCh_AlJazeeraMub'",
+            "'AqCh_AlAraby'",
+            "'AqCh_AsharqNews'",
+            "'AqCh_CNBCArabiya'",
+            "'AqCh_RTArabic'",
+            "'AqCh_TRTArabic'",
+            "'AqCh_AlHurra'",
+            "'AqCh_France24Ara'",
+            "'RX1_France24Eng'",
+            "'RX1_France24Fr'",
+            "'RX1_QatarTV1'",
+            "'RX1_QatarTV2'",
+            "'RX1_ONTV'",
+            "'RX1_AlJadeed'",
+            "'RX1_24News'",
+            "'AqCh_TRTWorld'",
+            "'RX1_CGTN'",
+            "'AqCh_NHKWorldTV'",
+            "'AqCh_AlArabiya'",
+            "'AqCh_AlArabiyaBusNews'",
+            "'AqCh_AlHadath'",
+            "'AqCh_AsharqDoc'",
+            "'AqCh_AlMashhad'",
+            "'AqCh_AlHurraIraq'",
+            "'RX1_AbuDhabiSp1'",
+            "'RX1_AbuDhabiSp2'",
+            "'RX1_YASSports'",
+            "'RX1_DubaiSp1'",
+            "'RX1_DubaiSp2'",
+            "'RX1_DubaiRace1'",
+            "'RX1_DubaiRace2'",
+            "'RX1_ONTimeSp1'",
+            "'RX1_ONTimeSp2'",
+            "'RX1_KSASp1'",
+            "'RX1_KuwaitSports'",
+            "'RX1_OmanSports'",
+            "'RX1_JordanSp'",
+            "'RX1_SharjanSp'",
+            "'AqCh_PadelTimeTV'",
+            "'AqCh_DWTVArabic'",
+            "'RX1_AlRayyan'",
+            "'AqCh_AlAraby2'",
+            "'RX1_AlEmarat'",
+            "'RX1_DubaiTV'",
+            "'RX1_SamaDubai'",
+            "'AqCh_RoyaTV'",
+            "'RX1_ArirangWorld'",
+            "'AqCh_B4UPlus'",
+            "'RX1_SaudiTV'",
+            "'RX1_SharjanTV'",
+            "'RX1_AlhMuslslat'",
+            "'RX1_NileComedy'",
+            "'RX1_CDCDrama'",
+            "'RX1_CBCSofra'",
+            "'RX1_ElMehwa'",
+            "'RX1_SudanTV'",
+            "'RX1_JordanTV'",
+            "'RX1_TLLiban'",
+            "'RX1_M24Maroc'",
+            "'RX1_Nessma'",
+            "'RX1_2MMonde'",
+            "'RX1_NileDrama'",
+            "'RX1_NileCinema'",
+            "'RX1_ONDrama'",
+            "'RX1_CanalAlgerie'",
+            "'RX1_AlNahar'",
+            "'RX1_DubaiOne'",
+            "'RX1_TV5Monde'",
+            "'RX1_PTVWorld'",
+            "'RX1_KuwaitTV1'",
+            "'RX1_OmanTV'",
+            "'RX1_BahrainTV'",
+            "'RX1_AdalahTV'",
+            "'RX1_AmmanTV'",
+            "'RX1_AlRai'",
+            "'RX1_SyriaTV'",
+            "'RX1_AlRayyan2'",
+            "'RX1_Alan'",
+            "'RX1_AlQurain'",
+            "'RX1_AlResalah'",
+            "'RX1_OTV'",
+            "'RX1_LBCSAT'",
+            "'RX1_TVTunisia1'",
+            "'RX1_AlAoula'",
+            "'RX1_AlSharqiya'",
+            "'RX1_AlSumaria'",
+            "'RX1_TVEIntAsia'",
+            "'RX1_PTVHome'",
+            "'AqCh_AlJazeeraDoc'",
+            "'RX1_AlmajdSpace'",
+            "'RX1_Almajd'",
+            "'RX1_AlNabawy'",
+            "'RX1_AlKareemTV'",
+            "'RX1_SaudiSunnah'",
+            "'RX1_PeaceTV'",
+            "'RX1_MBC2'"
+          ],
+          "value": [
+            "'AqCh_AlJazeeraEng'",
+            "'AqCh_RussiaToday'",
+            "'AqCh_AlJazeeraTV'",
+            "'AqCh_AlJazeeraMub'",
+            "'AqCh_AlAraby'",
+            "'AqCh_AsharqNews'",
+            "'AqCh_CNBCArabiya'",
+            "'AqCh_RTArabic'",
+            "'AqCh_TRTArabic'",
+            "'AqCh_AlHurra'",
+            "'AqCh_France24Ara'",
+            "'RX1_France24Eng'",
+            "'RX1_France24Fr'",
+            "'RX1_QatarTV1'",
+            "'RX1_QatarTV2'",
+            "'RX1_ONTV'",
+            "'RX1_AlJadeed'",
+            "'RX1_24News'",
+            "'AqCh_TRTWorld'",
+            "'RX1_CGTN'",
+            "'AqCh_NHKWorldTV'",
+            "'AqCh_AlArabiya'",
+            "'AqCh_AlArabiyaBusNews'",
+            "'AqCh_AlHadath'",
+            "'AqCh_AsharqDoc'",
+            "'AqCh_AlMashhad'",
+            "'AqCh_AlHurraIraq'",
+            "'RX1_AbuDhabiSp1'",
+            "'RX1_AbuDhabiSp2'",
+            "'RX1_YASSports'",
+            "'RX1_DubaiSp1'",
+            "'RX1_DubaiSp2'",
+            "'RX1_DubaiRace1'",
+            "'RX1_DubaiRace2'",
+            "'RX1_ONTimeSp1'",
+            "'RX1_ONTimeSp2'",
+            "'RX1_KSASp1'",
+            "'RX1_KuwaitSports'",
+            "'RX1_OmanSports'",
+            "'RX1_JordanSp'",
+            "'RX1_SharjanSp'",
+            "'AqCh_PadelTimeTV'",
+            "'AqCh_DWTVArabic'",
+            "'RX1_AlRayyan'",
+            "'AqCh_AlAraby2'",
+            "'RX1_AlEmarat'",
+            "'RX1_DubaiTV'",
+            "'RX1_SamaDubai'",
+            "'AqCh_RoyaTV'",
+            "'RX1_ArirangWorld'",
+            "'AqCh_B4UPlus'",
+            "'RX1_SaudiTV'",
+            "'RX1_SharjanTV'",
+            "'RX1_AlhMuslslat'",
+            "'RX1_NileComedy'",
+            "'RX1_CDCDrama'",
+            "'RX1_CBCSofra'",
+            "'RX1_ElMehwa'",
+            "'RX1_SudanTV'",
+            "'RX1_JordanTV'",
+            "'RX1_TLLiban'",
+            "'RX1_M24Maroc'",
+            "'RX1_Nessma'",
+            "'RX1_2MMonde'",
+            "'RX1_NileDrama'",
+            "'RX1_NileCinema'",
+            "'RX1_ONDrama'",
+            "'RX1_CanalAlgerie'",
+            "'RX1_AlNahar'",
+            "'RX1_DubaiOne'",
+            "'RX1_TV5Monde'",
+            "'RX1_PTVWorld'",
+            "'RX1_KuwaitTV1'",
+            "'RX1_OmanTV'",
+            "'RX1_BahrainTV'",
+            "'RX1_AdalahTV'",
+            "'RX1_AmmanTV'",
+            "'RX1_AlRai'",
+            "'RX1_SyriaTV'",
+            "'RX1_AlRayyan2'",
+            "'RX1_Alan'",
+            "'RX1_AlQurain'",
+            "'RX1_AlResalah'",
+            "'RX1_OTV'",
+            "'RX1_LBCSAT'",
+            "'RX1_TVTunisia1'",
+            "'RX1_AlAoula'",
+            "'RX1_AlSharqiya'",
+            "'RX1_AlSumaria'",
+            "'RX1_TVEIntAsia'",
+            "'RX1_PTVHome'",
+            "'AqCh_AlJazeeraDoc'",
+            "'RX1_AlmajdSpace'",
+            "'RX1_Almajd'",
+            "'RX1_AlNabawy'",
+            "'RX1_AlKareemTV'",
+            "'RX1_SaudiSunnah'",
+            "'RX1_PeaceTV'",
+            "'RX1_MBC2'"
+          ]
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "bdz5q7udhc000d"
+        },
+        "definition": "Infinity- (infinity) csv",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "Channel",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "azBlobName": "ordcallletter.csv",
+            "azContainerName": "datastore-clientlogs",
+            "columns": [],
+            "filters": [],
+            "format": "table",
+            "refId": "variable",
+            "root_selector": "",
+            "source": "azure-blob",
+            "type": "csv",
+            "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+            "url_options": {
+              "data": "",
+              "method": "GET"
+            }
+          },
+          "query": "",
+          "queryType": "infinity"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "New dashboard Copy-clone",
+  "uid": "ee2bc1dt6ypkwa",
+  "version": 1,
+  "weekStart": ""
+}
