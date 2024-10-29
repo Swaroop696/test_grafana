@@ -60,5 +60,15 @@
       "name": "Subscription Predictive Modeling",
       "url": "https://grafana-new.mgmt.tv3cloud.net/d/b4a0a294-4f3a-4625-bdff-2d75349f7084/subscription-predictive-modeling?orgId=3"
     }
+  ],
+  "user-engagement-new": [
+    {
+      "name": "Content Heatmaps",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/dc38b03f-6753-4e70-9713-3471dd456dca/content-heatmaps?orgId=3"
+    },
+    {
+      "name": "Subscription Predictive Modeling",
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/b4a0a294-4f3a-4625-bdff-2d75349f7084/subscription-predictive-modeling?orgId=3"
+    }
   ]
 }
