@@ -1,0 +1,20 @@
+{
+  "dashboards": [
+    {
+      "dashboard_name": "Users",
+      "panels": [
+        "Daily Active Users (DAU) NEW",
+        "Monthly Active Users (MAU) NEW",
+        "Active Users",
+        "New Users"
+      ]
+    },
+    {
+      "dashboard_name": "Usage",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    }
+  ]
+}
