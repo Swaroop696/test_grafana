@@ -15,6 +15,48 @@
         "Total Plays",
         "Total Duration Watched"
       ]
+    },
+    {
+      "dashboard_name": "Watch Behaviour",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    },
+    {
+      "dashboard_name": "Watch Insights",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    },
+    {
+      "dashboard_name": "Unique Users",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    },
+    {
+      "dashboard_name": "Rebuffer Percentage",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    },
+    {
+      "dashboard_name": "Errors",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
+    },
+    {
+      "dashboard_name": "Device Usage",
+      "panels": [
+        "Total Plays",
+        "Total Duration Watched"
+      ]
     }
   ]
 }
