@@ -39,6 +39,33 @@
         "All VOD Assets - Duration Watched",
         "Top Users Vs Watched Time"
       ]
+    },
+    {
+      "dashboard_name": "Unique Users",
+      "panels": [
+        "Total Plays"
+      ]
+    },
+    {
+      "dashboard_name": "Rebuffer Percentage",
+      "panels": [
+        "Rebuffer Percentage - Live and VOD"
+      ]
+    },
+    {
+      "dashboard_name": "Errors",
+      "panels": [
+        "Error Percentage - Live and VOD"
+      ]
+    },
+    {
+      "dashboard_name": "Device Usage",
+      "panels": [
+        "Device Types - Android",
+        "Device Types - iOS",
+        "Device Types - Web TV",
+        "Device Types - FireTV"
+      ]
     }
   ]
 }
