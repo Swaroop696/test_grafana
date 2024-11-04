@@ -9,14 +9,14 @@
         "New Users",
         "Returning Users",
         "Deleted Users",
-        "Unique Viewers by Platform",
-        
+        "Unique Viewers by Platform",        
       ]
     },
     {
       "dashboard_name": "Usage",
       "panels": [
         "Max Concurrent Viewers - Live and VOD",
+        "App Version"
       ]
     },
     {
@@ -34,36 +34,38 @@
     {
       "dashboard_name": "Watch Insights",
       "panels": [
-        "Total Plays",
-        "Total Duration Watched"
+        "All Channels - Total Plays",
+        "All VOD Assets - Total Plays",
+        "All Channels - Duration Watched",
+        "All VOD Assets - Duration Watched",
+        "Top Users Vs Watched Time"
       ]
     },
     {
       "dashboard_name": "Unique Users",
       "panels": [
         "Total Plays",
-        "Total Duration Watched"
       ]
     },
     {
       "dashboard_name": "Rebuffer Percentage",
       "panels": [
-        "Total Plays",
-        "Total Duration Watched"
+        "Rebuffer Percentage - Live and VOD"
       ]
     },
     {
       "dashboard_name": "Errors",
       "panels": [
-        "Total Plays",
-        "Total Duration Watched"
+        "Error Percentage - Live and VOD"
       ]
     },
     {
       "dashboard_name": "Device Usage",
       "panels": [
-        "Total Plays",
-        "Total Duration Watched"
+        "Device Types - Android",
+        "Device Types - iOS",
+        "Device Types - Web TV",
+        "Device Types - FireTV"
       ]
     }
   ]
