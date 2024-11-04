@@ -18,55 +18,6 @@
         "Max Concurrent Viewers - Live and VOD",
         "App Version"
       ]
-    },
-    {
-      "dashboard_name": "Watch Behaviour",
-      "panels": [
-        "Total Plays",
-        "Total Duration Watched",
-        "Total Plays - Live and VOD",
-        "Total  Duration Watched - Android",
-        "Total  Duration Watched - iOS",
-        "Total  Duration Watched - Fire TV",
-        "Total  Duration Watched - Web TV"
-      ]
-    },
-    {
-      "dashboard_name": "Watch Insights",
-      "panels": [
-        "All Channels - Total Plays",
-        "All VOD Assets - Total Plays",
-        "All Channels - Duration Watched",
-        "All VOD Assets - Duration Watched",
-        "Top Users Vs Watched Time"
-      ]
-    },
-    {
-      "dashboard_name": "Unique Users",
-      "panels": [
-        "Total Plays",
-      ]
-    },
-    {
-      "dashboard_name": "Rebuffer Percentage",
-      "panels": [
-        "Rebuffer Percentage - Live and VOD"
-      ]
-    },
-    {
-      "dashboard_name": "Errors",
-      "panels": [
-        "Error Percentage - Live and VOD"
-      ]
-    },
-    {
-      "dashboard_name": "Device Usage",
-      "panels": [
-        "Device Types - Android",
-        "Device Types - iOS",
-        "Device Types - Web TV",
-        "Device Types - FireTV"
-      ]
     }
   ]
 }
