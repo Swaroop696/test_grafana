@@ -2,43 +2,43 @@
   "user-engagement": [
     {
       "name": "Users",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/a47ad859-fb69-4517-87ae-45ec38ee062f/daily-weekly-active-users-dau-wau?orgId=3"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ae3128zdjyn0gc/Users"
     },
     {
       "name": "Usage",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/f1ad1b3e-a8ab-4eb8-b929-1da9a34fe9aa/content-completion-rate?orgId=3"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ce31292da2zuod/Usage"
     },
     {
       "name": "Watch Behaviour",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ac04e756-23a7-44b3-941c-b9589c64291b/time-of-day-usage?orgId=3"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ee31295dk6jggb/Watch-Behaviour"
     }
   ],
   "content-performance": [
     {
       "name": "Watch Insights",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/da6734dc-b3b5-4300-baee-f231305b3617/watch-insights"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ee31298fkpjpcc/Watch-Insights"
     }
   ],
   "user-acquisition": [
     {
       "name": "Unique Users",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/cf448d63-f9b2-44ad-b7bb-9030af895d05/unique-users?orgId=3"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/fe3129bfnbe9se/Unique-Users"
     }
   ],
   "technical-performance": [
     {
       "name": "Rebuffer Percentage",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/e09d4794-5bbf-4bb5-8e17-e5cda709a850/rebuffer-percentage"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/de3129efsf56of/Rebuffer-Percentage"
     },
     {
       "name": "Errors",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/b380ca89-a9dc-4b9e-aa11-329790553af7/errors"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/ae3129hh6h2bkc/Errors"
     }
   ],
   "demographics": [
     {
       "name": "Device Usage",
-      "url": "https://grafana-new.mgmt.tv3cloud.net/d/bb9e945c-e111-4b03-887c-ce3ea7487ee8/device-usage?orgId=3"
+      "url": "https://grafana-new.mgmt.tv3cloud.net/d/be3129khy1wcgf/Device-Usage"
     }
   ],
   "recommendation-effectiveness": [
