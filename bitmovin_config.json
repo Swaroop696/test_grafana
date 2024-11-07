@@ -3,24 +3,27 @@
     {
       "datasource": {
         "type": "bitmovin-analytics-datasource",
-        "uid": "new-bitmovin-uid"
+        "uid": "jjSo7k2Sz"
       },
-      "description": "Updated description for Bitmovin panel",
+      "description": "Count of Impression ids (Number of Plays) for all users watching Live and VOD across all tenants.\n\nPlays are not unique users. If a user watches multiple videos they will be counted as multiple plays.\n\nData Source: Bitmovin",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
           "thresholds": {
+            "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "green",
                 "value": null
               }
             ]
           },
-          "unit": "short"
-        }
+          "unit": "locale"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -28,17 +31,32 @@
         "x": 0,
         "y": 0
       },
-      "id": 10,
+      "id": 3,
       "options": {
         "colorMode": "value",
+        "graphMode": "none",
         "justifyMode": "auto",
+        "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["sum"]
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
       },
+      "pluginVersion": "10.4.8",
       "targets": [
         {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
           "dimension": "IMPRESSION_ID",
           "filter": [
             {
@@ -47,11 +65,26 @@
               "value": "0"
             }
           ],
-          "license": "new-license-id-1",
+          "groupBy": [],
+          "interval": "DAY",
+          "license": "413af3e9-c924-45d0-a15f-44683607d718",
           "metric": "count",
-          "refId": "A"
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "A",
+          "resultFormat": "time_series"
         },
         {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
           "dimension": "IMPRESSION_ID",
           "filter": [
             {
@@ -60,23 +93,164 @@
               "value": "0"
             }
           ],
-          "license": "new-license-id-2",
+          "groupBy": [],
+          "hide": false,
+          "interval": "DAY",
+          "license": "54d7f9fb-49a0-443c-9861-c2472dbbbcd9",
           "metric": "count",
-          "refId": "B"
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "B",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
+          "dimension": "IMPRESSION_ID",
+          "filter": [
+            {
+              "name": "VIDEO_STARTUPTIME",
+              "operator": "GT",
+              "value": "0"
+            }
+          ],
+          "groupBy": [],
+          "hide": false,
+          "interval": "DAY",
+          "license": "5a3c4d40-c8bb-41c4-9d1c-2269829e54e6",
+          "metric": "count",
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "C",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
+          "dimension": "IMPRESSION_ID",
+          "filter": [
+            {
+              "name": "VIDEO_STARTUPTIME",
+              "operator": "GT",
+              "value": "0"
+            }
+          ],
+          "groupBy": [],
+          "hide": false,
+          "interval": "DAY",
+          "license": "0f350a59-df45-41ba-9bdd-746724ad6975",
+          "metric": "count",
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "D",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
+          "dimension": "IMPRESSION_ID",
+          "filter": [
+            {
+              "name": "VIDEO_STARTUPTIME",
+              "operator": "GT",
+              "value": "0"
+            }
+          ],
+          "groupBy": [],
+          "hide": false,
+          "interval": "DAY",
+          "license": "f92c6bc2-f079-4903-ba2f-e2d2e55a4e4b",
+          "metric": "count",
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "E",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "bitmovin-analytics-datasource",
+            "uid": "jjSo7k2Sz"
+          },
+          "dimension": "IMPRESSION_ID",
+          "filter": [
+            {
+              "name": "VIDEO_STARTUPTIME",
+              "operator": "GT",
+              "value": "0"
+            }
+          ],
+          "groupBy": [],
+          "hide": false,
+          "interval": "DAY",
+          "license": "fb7195ca-ef0b-4518-bba4-cc91e6922530",
+          "metric": "count",
+          "orderBy": [
+            {
+              "name": "FUNCTION",
+              "order": "DESC"
+            }
+          ],
+          "percentileValue": 95,
+          "refId": "F",
+          "resultFormat": "time_series"
         }
       ],
-      "title": "Updated Bitmovin Panel Title",
+      "title": "Total Plays",
       "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Time",
+                "Impression id / Play id"
+              ]
+            }
+          }
+        },
         {
           "id": "calculateField",
           "options": {
-            "alias": "Total Plays (Updated)",
+            "alias": "Total Plays",
+            "mode": "reduceRow",
             "reduce": {
               "reducer": "sum"
-            }
+            },
+            "replaceFields": true
           }
         }
-      ]
+      ],
+      "type": "stat"
     }
   ]
 }
